@@ -28,7 +28,7 @@ import { ConvoResponse } from '../convo-response.interface';
       ]),
       state('fade_out', style({
         opacity: 0,
-        transform: 'translateY(100&)'
+        transform: 'translateY(100%)'
       })),
       transition('fade_out => original', [
         animate('600ms cubic-bezier(0.445, 0.05, 0.55, 0.95)', keyframes([
