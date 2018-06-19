@@ -1,27 +1,20 @@
-<div style="display:flex;flex-direction:column;align-self:center;position: absolute;width:100%" [@fadeOutUpAndFadeInFromBottom]="instruction">
-  <div style="color:white;font-size:2rem;text-align:center"> {{ text }}</div>
-
-  <div style="display:flex;flex-direction:row;align-self:center;" *ngIf="convoResponse?.leftPicture">
-
-    <img [src]="convoResponse?.leftPicture" alt="assisantlogo" class="assistant-logo" />
-    <h1 class="white light" style="align-self:center">{{ convoResponse?.caption }}</h1>
-  </div>
-
-  <div style="display:flex;flex-direction:column;align-self:center;" *ngIf="convoResponse?.chips">
-
-    <h1 class="white light" style="text-align:center">
-      {{ convoResponse?.caption }}</h1>
-    <div class="content white light" style="align-self:center;text-align:center;margin-bottom:50px;" *ngIf="convoResponse?.displayMultiLine">
-      <div *ngFor="let line of convoResponse?.displayMultiLine">
-        {{line}}
-      </div>
+<div class="container">
+  <div class="response-list" [@responseTransition]="responseState" (@responseTransition.done)="handleResponseTransition($event)">
+    <div class="response-caption" *ngIf="convoResponse?.caption">
+        <div class="response-image" *ngIf="convoResponse?.leftPicture">
+          <img [src]="convoResponse?.leftPicture" class="" alt="assistant-logo">
+        </div>
+        <h1 class="response-text">{{ convoResponse?.caption }}</h1>
     </div>
-    <div style="align-self:center">
-      <mat-chip-list class="suggestion-chip">
-        <mat-chip color="primary" selected="true" *ngFor="let chip of convoResponse?.chips">{{ chip}}</mat-chip>
-      </mat-chip-list>
+
+    <div class="response-lines" *ngIf="convoResponse?.displayMultiLine">
+      <p *ngFor="let line of convoResponse?.displayMultiLine">{{ line }}</p>
+    </div>
+
+    <div class="response-chips" *ngIf="convoResponse?.chips">
+        <mat-chip-list class="chips-list">
+          <mat-chip class="chip" selected="true" *ngFor="let chip of convoResponse?.chips" [@chip]="responseState">{{ chip }}</mat-chip>
+        </mat-chip-list>
     </div>
   </div>
-
-
 </div>

@@ -4,9 +4,11 @@ import {
   state,
   style,
   animate,
-  useAnimation,
+  group,
+  query,
+  stagger,
   transition,
-  keyframes
+  animateChild,
 } from '@angular/animations';
 
 import { ConvoResponse } from '../convo-response.interface';
@@ -14,61 +16,88 @@ import { ConvoResponse } from '../convo-response.interface';
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.css'],
+  styleUrls: ['./carousel.component.scss'],
   animations: [
-    trigger('fadeOutUpAndFadeInFromBottom', [
-      state('original', style({
-        opacity: 1
+    trigger('responseTransition', [
+      state('initial', style({
+        opacity: 1,
       })),
-      transition('original => fade_out', [
-        animate('600ms cubic-bezier(0.445, 0.05, 0.55, 0.95)', keyframes([
-          style({ opacity: 1, transform: 'translateY(0)', offset: 0 }),
-          style({ opacity: 0, transform: 'translateY(-100%)', offset: 1 }),
-        ]))
+      transition('initial => fadeOut', [
+        animate('0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95)', style({
+          opacity: 0, transform: 'translateY(-15px)'
+        }))
       ]),
-      state('fade_out', style({
-        opacity: 0,
-        transform: 'translateY(100%)'
-      })),
-      transition('fade_out => original', [
-        animate('600ms cubic-bezier(0.445, 0.05, 0.55, 0.95)', keyframes([
-          style({ opacity: 0, transform: 'translateY(100%)', offset: 0 }),
-          style({ opacity: 1, transform: 'translateY(0)', offset: 1 }),
-        ]))
-      ])])]
+      transition('fadeOut => initial, void => initial', [
+        style({
+          opacity: 0, transform: 'translateY(15px)'
+        }),
+        group([
+          animate('0.6s cubic-bezier(0.445, 0.05, 0.55, 0.95)', style({
+            opacity: 1, transform: 'none'
+          })),
+          query('@chip', [
+            stagger(100, [
+              animateChild()
+            ])
+          ], {optional: true})
+        ])
+      ])
+    ]),
+    trigger('chip', [
+      transition('fadeOut => initial, void => initial', [
+        style({
+          opacity: 0, transform: 'translateX(5px)'
+        }),
+        animate('0.6s ease-out', style({
+          opacity: 1, transform: 'none'
+        }))
+      ])
+    ])
+  ]
 })
 
 export class CarouselComponent implements OnInit {
 
   isFirstTime = true;
-  instruction = "original";
+
+  responseState = 'initial';
 
   _convoResponse: ConvoResponse;
+
+  _nextResponse: ConvoResponse;
+
   get convoResponse(): ConvoResponse {
     return this._convoResponse;
   }
+
   @Input()
   set convoResponse(value: ConvoResponse) {
-    console.log('value is set', value);
-    if(!value){
+    if (!value) {
       this._convoResponse = value;
       return;
     }
+
     if (this.isFirstTime) {
       this.isFirstTime = false;
       this._convoResponse = value;
+      return;
     }
-    else {
-      this.instruction = 'fade_out';
-      setTimeout(() => {
-        this._convoResponse = value;
-        this.instruction = 'original';
-      }, 1000);
-    }
+
+    this.responseState = 'fadeOut';
+    this._nextResponse = value;
   }
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  handleResponseTransition({ fromState, toState }) {
+    const stateTransition = `${fromState} => ${toState}`;
+
+    if (stateTransition === 'initial => fadeOut') {
+      this._convoResponse = this._nextResponse;
+      this.responseState = 'initial';
+    }
+  }
 }

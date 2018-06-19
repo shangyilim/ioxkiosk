@@ -1,0 +1,21 @@
+.app {
+    &-header {
+        height: 6rem;
+        line-height: 6rem;
+        text-align: right;
+    }
+
+    &-logo {
+        height: 4rem;
+        margin-top: 1rem;
+    }
+
+    &-body {
+        min-height: calc(100vh - 6rem);
+        display: flex;
+    }
+
+    &-carousel {
+        margin: auto;
+    }
+}

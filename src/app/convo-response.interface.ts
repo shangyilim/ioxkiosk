@@ -3,6 +3,6 @@ export interface ConvoResponse {
     caption: string;
     displayMultiLine?: string[];
     leftPicture?: string;
-    chips?: string[],
-    reset?:boolean
+    chips?: string[];
+    reset?: boolean;
 }

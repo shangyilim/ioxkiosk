@@ -1,8 +1,9 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center;height:calc(100vh*0.2); padding-top:100px;">
-  <img src="assets/hashtag_black_final.gif" alt="iologo" class="assistant-logo" />
+<div class="app-header">
+  <div class="container">
+      <img src="assets/hashtag_black_final.gif" alt="iologo" class="app-logo" />
+  </div>
 </div>
-<div style="display:flex;flex-direction:column;height:calc(100vh*0.68);justify-content:start;">
-  <app-carousel [convoResponse]="response"></app-carousel>
-
+<div class="app-body">
+  <app-carousel class="app-carousel" [convoResponse]="response"></app-carousel>
 </div>

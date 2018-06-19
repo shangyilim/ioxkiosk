@@ -7,16 +7,15 @@ import {
   useAnimation,
   transition
 } from '@angular/animations';
-import { fadeInUp, fadeOutUp } from 'ng-animate';
+import { fadeOutUp } from 'ng-animate';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { Observable } from 'rxjs';
 
 import { ConvoResponse } from './convo-response.interface';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   animations: [
     trigger('fadeOutUp', [
       state('false', style({
@@ -60,7 +59,7 @@ export class AppComponent {
 
     db.object('settings').snapshotChanges().delay(4000).subscribe(settings => {
       console.log('settings payload', settings.payload.val());
-      const greetingFound = settings.payload.val().greeting;
+      const greetingFound = (settings.payload.val() as any).greeting;
       if (greetingFound) {
         this.response = {
           speech: '',
@@ -69,24 +68,22 @@ export class AppComponent {
             `When is the next talk?`,
             `What's the WiFi password?`,
             `Whats the schedule?`, `Bye!`]
-        }
-      }
-      else {
+        };
+      } else {
         this.response = mainResponse;
       }
     });
 
-    db.object('response').snapshotChanges().delay(4000).subscribe(response => {
-      const responseValue = response.payload.val();
+    db.object('response').snapshotChanges().delay(8000).subscribe(response => {
+      const responseValue: any = response.payload.val();
       if (responseValue) {
         if (!responseValue.chips) {
           responseValue.chips = [`Who's our sponsors?`,
             `When is the next talk?`,
             `What's the WiFi password?`,
-            `Whats the schedule?`, `Bye!`]
+            `Whats the schedule?`, `Bye!`];
           this.response = responseValue;
         }
-
       }
     });
 
