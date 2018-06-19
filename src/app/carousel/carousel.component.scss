@@ -1,0 +1,47 @@
+.container {
+    height: 100%;
+    display: flex;
+}
+
+.response {
+    &-list {
+        text-align: center;
+        margin: auto;
+
+        > * + * {
+            margin-top: 3rem;
+        }
+    }
+
+    &-caption {
+        display: flex;
+    }
+
+    &-image {
+        margin-right: 15px;
+        flex: 0 0 30%;
+
+        img {
+            max-width: 100%;
+        }
+    }
+
+    &-text {
+        font-weight: lighter;
+        font-size: 3rem;
+        flex: 1 1 0;
+        margin: auto;
+    }
+
+    &-lines {
+        font-size: 1.5rem;
+
+        p {
+            margin: 0;
+
+            & + p {
+                margin-top: 1rem;
+            }
+        }
+    }
+}
