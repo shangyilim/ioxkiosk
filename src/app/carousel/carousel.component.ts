@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import {
   trigger,
   state,
@@ -10,6 +10,9 @@ import {
   transition,
   animateChild,
 } from '@angular/animations';
+import { ImageCapture } from 'image-capture';
+import * as firebase from 'firebase';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 import { ConvoResponse } from '../convo-response.interface';
 
@@ -39,7 +42,7 @@ import { ConvoResponse } from '../convo-response.interface';
             stagger(100, [
               animateChild()
             ])
-          ], {optional: true})
+          ], { optional: true })
         ])
       ])
     ]),
@@ -59,8 +62,15 @@ import { ConvoResponse } from '../convo-response.interface';
 export class CarouselComponent implements OnInit {
 
   isFirstTime = true;
-
+  myAngularxQrCode='';
   responseState = 'initial';
+
+  @ViewChild('video') video: ElementRef;
+  @ViewChild('canvas') canvas: ElementRef;
+
+  imageCapture: any;
+  hideVideo = false;
+
 
   _convoResponse: ConvoResponse;
 
@@ -74,20 +84,45 @@ export class CarouselComponent implements OnInit {
   set convoResponse(value: ConvoResponse) {
     if (!value) {
       this._convoResponse = value;
+
       return;
     }
-
     if (this.isFirstTime) {
       this.isFirstTime = false;
       this._convoResponse = value;
       return;
     }
 
+
+
     this.responseState = 'fadeOut';
     this._nextResponse = value;
+
+    if (this._nextResponse.intent === 'take_picture') {
+      this.hideVideo = false;
+      console.log('invoke camera');
+      this.getCameraDevices();
+    }
+
+    if (this._nextResponse.intent === 'cheese') {
+      this.getCameraDevices().then(() => this.snapPicture());
+    }
+
+    if(this._nextResponse.intent === 'cheese_yes'){
+     
+      const imageData = this.canvas.nativeElement.toDataURL("image/png");
+console.log('imagedata', imageData);
+      const filepath = (new Date()).getTime()+"ioxkl_pic.png";
+      this.storage.ref(filepath).putString(imageData, firebase.storage.StringFormat.DATA_URL).then((uploadSnapshot)=> {
+        console.log('downloadurl',uploadSnapshot.downloadURL);
+        this.myAngularxQrCode = uploadSnapshot.downloadURL;
+      });
+
+    }
+
   }
 
-  constructor() { }
+  constructor(private storage: AngularFireStorage) { }
 
   ngOnInit() {
   }
@@ -99,5 +134,36 @@ export class CarouselComponent implements OnInit {
       this._convoResponse = this._nextResponse;
       this.responseState = 'initial';
     }
+  }
+
+  getCameraDevices() {
+    return navigator.mediaDevices.getUserMedia({ video: true })
+      .then((mediaStream) => {
+        this.video.nativeElement.srcObject = mediaStream;
+        const track = mediaStream.getVideoTracks()[0];
+        this.imageCapture = new ImageCapture(track);
+
+      })
+      .catch(error => console.error('getUserMedia() error:', error));
+  }
+
+  snapPicture() {
+    this.hideVideo = true;
+    this.imageCapture.grabFrame()
+      .then(imageBitmap => {
+        this.canvas.nativeElement.width = imageBitmap.width;
+        this.canvas.nativeElement.height = imageBitmap.height+40;
+        this.canvas.nativeElement.getContext('2d').fillStyle="#FFFFFF";
+        this.canvas.nativeElement.getContext('2d').fillRect(0,0, this.canvas.nativeElement.width , this.canvas.nativeElement.height)
+        this.canvas.nativeElement.getContext('2d').drawImage(imageBitmap, 0, 0);
+        let img = document.getElementById('logo');
+        this.canvas.nativeElement.getContext('2d').drawImage(img, this.canvas.nativeElement.width-210, imageBitmap.height+5);
+        this.canvas.nativeElement.getContext('2d').font="12px Roboto";
+        
+        this.canvas.nativeElement.getContext('2d').fillStyle="#848484";
+        this.canvas.nativeElement.getContext('2d').fillText("#ioxkl18  #io18extended", 10,  imageBitmap.height+23);
+
+      })
+      .catch(error => console.log(error));
   }
 }

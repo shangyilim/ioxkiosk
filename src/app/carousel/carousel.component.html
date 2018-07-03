@@ -1,20 +1,28 @@
 <div class="container">
   <div class="response-list" [@responseTransition]="responseState" (@responseTransition.done)="handleResponseTransition($event)">
     <div class="response-caption" *ngIf="convoResponse?.caption">
-        <div class="response-image" *ngIf="convoResponse?.leftPicture">
-          <img [src]="convoResponse?.leftPicture" class="" alt="assistant-logo">
-        </div>
-        <h1 class="response-text">{{ convoResponse?.caption }}</h1>
+      <div class="response-image" *ngIf="convoResponse?.leftPicture">
+        <img [src]="convoResponse?.leftPicture" class="" alt="assistant-logo">
+      </div>
+      <h1 class="response-text">{{ convoResponse?.caption }}</h1>
     </div>
-
+    <div [hidden]="convoResponse?.intent !== 'take_picture' && convoResponse?.intent !== 'cheese' && convoResponse?.intent !== 'cheese_yes'">
+      <video #video style="width:100%; height:100%" autoplay [hidden]="hideVideo"></video>
+      <canvas [hidden]="!hideVideo" #canvas style="width:100%;height:100%"></canvas>
+      <img src="assets/io18_logo_kuala_lumpur.png" width="150" id="logo" style="display:none" />
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <mat-spinner style="width:20%" ></mat-spinner>
+      <qrcode [qrdata]="myAngularxQrCode" *ngIf="myAngularxQrCode" [size]="256" [level]="'M'"></qrcode>
+      </div>
+    </div>
     <div class="response-lines" *ngIf="convoResponse?.displayMultiLine">
       <p *ngFor="let line of convoResponse?.displayMultiLine">{{ line }}</p>
     </div>
 
     <div class="response-chips" *ngIf="convoResponse?.chips">
-        <mat-chip-list class="chips-list">
-          <mat-chip class="chip" selected="true" *ngFor="let chip of convoResponse?.chips" [@chip]="responseState">{{ chip }}</mat-chip>
-        </mat-chip-list>
+      <mat-chip-list class="chips-list">
+        <mat-chip class="chip" selected="true" *ngFor="let chip of convoResponse?.chips" [@chip]="responseState">{{ chip }}</mat-chip>
+      </mat-chip-list>
     </div>
   </div>
 </div>

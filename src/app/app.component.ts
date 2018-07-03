@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import {
   trigger,
   state,
@@ -45,7 +45,6 @@ export class AppComponent {
   disableIntro = false;
   response: ConvoResponse = null;
 
-
   constructor(db: AngularFireDatabase) {
 
     const mainResponse: ConvoResponse = {
@@ -74,9 +73,21 @@ export class AppComponent {
       }
     });
 
-    db.object('response').snapshotChanges().delay(8000).subscribe(response => {
-      const responseValue: any = response.payload.val();
+    db.object('response').snapshotChanges().delay(4000).subscribe(response => {
+      const responseValue: ConvoResponse = response.payload.val();
       if (responseValue) {
+
+        if(responseValue.intent === 'back_main'){
+          this.response = {
+            speech: '',
+            caption: `Welcome to I/O Extended Kuala Lumpur! Here's what you can do `,
+            chips: [`Who's our sponsors?`,
+              `When is the next talk?`,
+              `What's the WiFi password?`,
+              `Whats the schedule?`, `Bye!`]
+          };
+        }
+        
         if (!responseValue.chips) {
           responseValue.chips = [`Who's our sponsors?`,
             `When is the next talk?`,
@@ -88,4 +99,8 @@ export class AppComponent {
     });
 
   }
+
+ 
+
+
 }
