@@ -13,7 +13,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyBURlAs0LGwtwNruXy4fnzWWSAEl7LsAkw",
+    apiKey: "revoked",
     authDomain: "iox-kiosk.firebaseapp.com",
     databaseURL: "https://iox-kiosk.firebaseio.com",
     projectId: "iox-kiosk",
