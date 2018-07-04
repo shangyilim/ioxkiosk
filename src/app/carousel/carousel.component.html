@@ -10,9 +10,9 @@
       <video #video style="width:100%; height:100%" autoplay [hidden]="hideVideo"></video>
       <canvas [hidden]="!hideVideo" #canvas style="width:100%;height:100%"></canvas>
       <img src="assets/io18_logo_kuala_lumpur.png" width="150" id="logo" style="display:none" />
-      <div style="display: flex; flex-direction: column; align-items: center;">
-        <mat-spinner style="width:20%" ></mat-spinner>
-      <qrcode [qrdata]="myAngularxQrCode" *ngIf="myAngularxQrCode" [size]="256" [level]="'M'"></qrcode>
+      <div style="display: flex; flex-direction: column; align-items: center;" >
+        <mat-spinner style="width:20%" *ngIf="convoResponse?.intent === 'cheese_yes' && !myAngularxQrCode"></mat-spinner>
+      <qrcode [qrdata]="myAngularxQrCode" *ngIf="myAngularxQrCode" [size]="256" [level]="'L'"></qrcode>
       </div>
     </div>
     <div class="response-lines" *ngIf="convoResponse?.displayMultiLine">
