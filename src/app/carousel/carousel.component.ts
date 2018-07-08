@@ -124,6 +124,7 @@ console.log('imagedata', imageData);
         this.myAngularxQrCode = uploadSnapshot.downloadURL;
       });
 
+
     }
 
   }

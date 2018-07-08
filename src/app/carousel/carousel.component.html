@@ -10,13 +10,52 @@
       <video #video style="width:100%; height:100%" autoplay [hidden]="hideVideo"></video>
       <canvas [hidden]="!hideVideo" #canvas style="width:100%;height:100%"></canvas>
       <img src="assets/io18_logo_kuala_lumpur.png" width="150" id="logo" style="display:none" />
-      <div style="display: flex; flex-direction: column; align-items: center;" >
+      <div style="display: flex; flex-direction: column; align-items: center;">
         <mat-spinner style="width:20%" *ngIf="convoResponse?.intent === 'cheese_yes' && !myAngularxQrCode"></mat-spinner>
-      <qrcode [qrdata]="myAngularxQrCode" *ngIf="myAngularxQrCode" [size]="256" [level]="'L'"></qrcode>
+        <qrcode [qrdata]="myAngularxQrCode" *ngIf="myAngularxQrCode" [size]="256" [level]="'L'"></qrcode>
       </div>
     </div>
     <div class="response-lines" *ngIf="convoResponse?.displayMultiLine">
       <p *ngFor="let line of convoResponse?.displayMultiLine">{{ line }}</p>
+    </div>
+
+    <div *ngIf="convoResponse?.intent === 'request_sponsor_list'" style="padding:10px;">
+      <div>
+        <h2>{{convoResponse?.payload.sponsors.label}}</h2>
+
+        <div class="logo-container">
+          <div class="logo-cradle " *ngFor="let lg of convoResponse?.payload.sponsors.logos">
+            <img [src]="lg" class="logo" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2>{{convoResponse?.payload.partners.label}}</h2>
+        <div class="logo-container">
+          <div class="logo-cradle " *ngFor="let lg of convoResponse?.payload.partners.logos">
+            <img [src]="lg" class="logo" />
+          </div>
+        </div>
+
+      </div>
+      <div>
+        <h2>{{convoResponse?.payload.fans.label}}</h2>
+        <div class="logo-container">
+          <div class="logo-cradle " *ngFor="let lg of convoResponse?.payload.fans.logos">
+            <img [src]="lg" class="logo" />
+          </div>
+        </div>
+
+      </div>
+      <div>
+        <h2>{{convoResponse?.payload.love.label}}</h2>
+        <div class="logo-container">
+          <div class="logo-cradle " *ngFor="let lg of convoResponse?.payload.love.logos">
+            <img [src]="lg" class="logo" />
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <div class="response-chips" *ngIf="convoResponse?.chips">

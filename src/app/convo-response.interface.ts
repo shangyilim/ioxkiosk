@@ -6,4 +6,5 @@ export interface ConvoResponse {
     leftPicture?: string;
     chips?: string[];
     reset?: boolean;
+    payload?: any;
 }

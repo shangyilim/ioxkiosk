@@ -46,3 +46,21 @@
     }
 }
 
+.logo {
+    max-width: 80px;
+}
+.logo-cradle {
+    height: 100px;
+    background-color:white;
+    align-items:center;
+    display:flex;
+    margin:5px;
+    padding:5px;
+}
+
+.logo-container {
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+}
