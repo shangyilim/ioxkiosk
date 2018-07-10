@@ -117,13 +117,12 @@ export class CarouselComponent implements OnInit {
       if(imageData === this.blankCanvas){
         return;
       }
-console.log('imagedata', imageData);
+
       const filepath = (new Date()).getTime()+"ioxkl_pic.png";
       this.storage.ref(filepath).putString(imageData, firebase.storage.StringFormat.DATA_URL).then((uploadSnapshot)=> {
         console.log('downloadurl',uploadSnapshot.downloadURL);
         this.myAngularxQrCode = uploadSnapshot.downloadURL;
       });
-
 
     }
 

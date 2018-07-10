@@ -12,7 +12,10 @@
       <img src="assets/io18_logo_kuala_lumpur.png" width="150" id="logo" style="display:none" />
       <div style="display: flex; flex-direction: column; align-items: center;">
         <mat-spinner style="width:20%" *ngIf="convoResponse?.intent === 'cheese_yes' && !myAngularxQrCode"></mat-spinner>
-        <qrcode [qrdata]="myAngularxQrCode" *ngIf="myAngularxQrCode" [size]="256" [level]="'L'"></qrcode>
+        <ngx-kjua *ngIf="myAngularxQrCode"
+          [text]="myAngularxQrCode"
+          [size]="200"
+          ></ngx-kjua>
       </div>
     </div>
     <div class="response-lines" *ngIf="convoResponse?.displayMultiLine">
@@ -57,6 +60,30 @@
 
       </div>
     </div>
+    <div *ngIf="convoResponse?.intent === 'list_schedule'" style="padding:10px;">
+      <table>
+        <thead style="line-height:20px;font-size:1.5rem">
+          <td>Time</td>
+          <td>JC 1</td>
+          <td>JC 3</td>
+          <td>LT 5</td>
+        </thead>
+        <tr *ngFor="let session of convoResponse?.payload">
+          <td style="font-size:1.5rem">{{session.startTime}}</td>
+          <td *ngFor="let slot of session.sessions" 
+          style="font-size:1.2rem;max-width:200px;word-wrap: break-word;text-align:left;padding:10px;border-bottom-style:solid;border-bottom-color:white;">{{slot.title}}</td>
+        </tr>
+      </table>
+      <div style="display:flex;flex-direction:column;align-items: center;">
+          <ngx-kjua
+          [text]="'https://events.gdgkl.org/io/schedule'"
+          [size]="200"
+        ></ngx-kjua>
+          
+          <h2>https://events.gdgkl.org/io/schedule</h2>
+      </div>
+    </div>
+
 
     <div class="response-chips" *ngIf="convoResponse?.chips">
       <mat-chip-list class="chips-list">

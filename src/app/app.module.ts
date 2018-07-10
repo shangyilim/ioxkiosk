@@ -6,6 +6,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { QRCodeModule } from 'angularx-qrcode';
+import { NgxKjuaModule } from 'ngx-kjua';
 
 import { AppComponent } from './app.component';
 import { CarouselComponent } from './carousel/carousel.component';
@@ -35,7 +36,8 @@ export const environment = {
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireStorageModule,
-    QRCodeModule
+    QRCodeModule,
+    NgxKjuaModule
   ],
   providers: [],
   bootstrap: [AppComponent],
