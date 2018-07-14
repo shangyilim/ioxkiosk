@@ -84,11 +84,52 @@
       </div>
     </div>
 
+    <div *ngIf="convoResponse?.intent === 'current_schedule'" style="padding:10px;">
+     <div *ngIf="convoResponse?.payload?.currentSessions">
+       <h2>Sessions Right Now</h2>
+        <table>
+            <thead style="line-height:20px;font-size:1.5rem">
+              <td>Hall</td>
+              <td>JC 1</td>
+              <td>JC 3</td>
+              <td>LT 5</td>
+            </thead>
+            <tr *ngIf="convoResponse?.payload.currentSessions[0]" >
+                <td style="font-size:1.5rem">{{convoResponse?.payload.currentSessions[0].startTime}}</td>
+                <td *ngFor="let slot of convoResponse?.payload.currentSessions[0].sessions" 
+                style="font-size:1.2rem;max-width:200px;word-wrap: break-word;text-align:left;padding:10px;border-bottom-style:solid;border-bottom-color:white;">{{slot.title}}</td>
+              </tr>
+          </table>
+     </div>
+     <div *ngIf="convoResponse?.payload?.laterSessions">
+        <h2>Sessions Coming Up</h2>
+         <table>
+             <thead style="line-height:20px;font-size:1.5rem">
+               <td>Hall</td>
+               <td>JC 1</td>
+               <td>JC 3</td>
+               <td>LT 5</td>
+             </thead>
+             <tr *ngIf="convoResponse?.payload.laterSessions[0]" >
+                 <td style="font-size:1.5rem">{{convoResponse?.payload.laterSessions[0].startTime}}</td>
+                 <td *ngFor="let slot of convoResponse?.payload.laterSessions[0].sessions" 
+                 style="font-size:1.2rem;max-width:200px;word-wrap: break-word;text-align:left;padding:10px;border-bottom-style:solid;border-bottom-color:white;">{{slot.title}}</td>
+               </tr>
+           </table>
+      </div>
+
+      <div *ngIf="!convoResponse?.payload">
+          <h1 class="response-text">There aren't any talks happening right now. Ask for the schedule instead?</h1>
+      </div>
+    </div>
+
+
 
     <div class="response-chips" *ngIf="convoResponse?.chips">
       <mat-chip-list class="chips-list">
         <mat-chip class="chip" selected="true" *ngFor="let chip of convoResponse?.chips" [@chip]="responseState">{{ chip }}</mat-chip>
       </mat-chip-list>
+      <div  style="font-size:20px;margin:10px;">Psst! Sometimes if the mirror doesn't hear you, you can say "OK Google," and ask it stuff!</div>
     </div>
   </div>
 </div>

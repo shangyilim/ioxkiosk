@@ -64,8 +64,10 @@ export class AppComponent {
           speech: '',
           caption: `Welcome to I/O Extended Kuala Lumpur! Here's what you can do `,
           chips: [`Who's our sponsors?`,
+            `What's the schedule?`,
             `When is the next talk?`,
             `What's the WiFi password?`,
+            `Take a picture!`,
             `Whats the schedule?`, `Bye!`]
         };
       } else {
@@ -82,17 +84,21 @@ export class AppComponent {
             speech: '',
             caption: `Welcome to I/O Extended Kuala Lumpur! Here's what you can do `,
             chips: [`Who's our sponsors?`,
-              `When is the next talk?`,
-              `What's the WiFi password?`,
-              `Whats the schedule?`, `Bye!`]
+            `What's the schedule?`,
+            `When is the next talk?`,
+            `What's the WiFi password?`,
+            `Take a picture!`,
+            `Whats the schedule?`, `Bye!`]
           };
         }
         
         if (!responseValue.chips) {
           responseValue.chips = [`Who's our sponsors?`,
-            `When is the next talk?`,
-            `What's the WiFi password?`,
-            `Whats the schedule?`, `Bye!`];
+          `What's the schedule?`,
+          `When is the next talk?`,
+          `What's the WiFi password?`,
+          `Take a picture!`,
+          `Whats the schedule?`, `Bye!`];
           this.response = responseValue;
         }
       }
